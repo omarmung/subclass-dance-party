@@ -1,8 +1,19 @@
 $(document).ready(function() {
-  window.dancers = [];
+  window.dots = [];
 
   var pressed = false;
   var timerId = 0;
+  var speed = 50;
+  var speedMin = 50;
+ 
+  $('.speedAdjustButton').on('click', function(event) {
+    console.log('speed button clicked, speed is: ' + speed);
+    if (speed > speedMin) {
+      speed = speed - 50;
+    } else { 
+      speed = 500; 
+    }
+  });
 
   $('.addDancerButton').on('click', function(event) {
     /* This function sets up the click handlers for the create-dancer
@@ -29,7 +40,9 @@ $(document).ready(function() {
                       'B62A2D', 'A62820', '3B1214', 'EBD8B8', '3F676B', 'AE2A20', 
                       '798FA8', 'D7BF8F', 'A1672A', 'BB2E2E', 'DDD8D2', 'D3384E',
                       '9986C4', 'DA5038', '161840', 'E4C8B5', 'E85FF3', 'BB882A',
-                      '272D69', '000000', 'EBAB34', 'E8C73C', '000406'];
+                      '272D69', '000000', 'EBAB34', 'E8C73C', '000406', '031V4B', '9F3326', 
+                      'BA6A21', '1B0C2E', '2C5E6A', '991F31', 'BACBB0', '509BAD', '9AA463',
+                      '093A95', '87B5D7', '0C0413', '6D518D', 'F1DD87', '062657', 'E4CEB4'];
 
     var numToColor = function(num) {
 
@@ -68,14 +81,26 @@ $(document).ready(function() {
         $("body").height() * numToHeight(Math.floor(Math.random() * 7)),
         $("body").width() * numToWidth(Math.floor(Math.random() * 12)),
         numToColor(Math.floor(Math.random() * hirstDots.length))
-        );
-
+      );
+      var top = dot.top;
+      var left = dot.left;
+      for (var i = 0; i < window.dots.length; i++) {
+        var distance = Math.sqrt(Math.pow(window.dots[i].top - top, 2) + Math.pow(window.dots[i].left - left, 2));
+        if (distance < 4) {
+          window.dots[i].$node.fadeOut('slow');
+          window.dots[i].$node.remove();
+        }
+      }
       $('body').append(dot.$node);
+      window.dots.push(dot);
     };
+
+
+
     if (!pressed) {
       $('.addDancerButton').text('Stop');
       newDot();
-      timerId = setInterval(newDot, 50);
+      timerId = setInterval(newDot, speed);
     } else {
       $('.addDancerButton').text('Start');
       clearInterval(timerId);
@@ -89,4 +114,6 @@ $(document).ready(function() {
 
   });
 });
+
+
 

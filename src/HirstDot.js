@@ -36,5 +36,8 @@ HirstDot.prototype.setColor = function(color) {
 
 HirstDot.prototype.fade = function() {
 
-  this.$node.fadeToggle();
+  this.$node.fadeIn('slow').delay(5000).fadeOut('slow', function() {
+    this.$node.remove();
+  }.bind(this));
+  // this.$node.remove();
 };
